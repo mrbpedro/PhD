@@ -21,7 +21,7 @@ Creating a new variable called *region* in order to distinguish each country by 
 
 
 ```
-data_geral <- data_geral %>% 
+data <- data %>% 
   mutate(region = case_when(ccode %in% c("CHN", "SGP", "HKG",
                             "JPN", "KOR","IDN",
                             "MYS", "PHL", "THA",
@@ -38,7 +38,7 @@ Selecting variables and then calculating the average social spending grouped by 
 
 
 ```
-g <- data_geral %>% 
+g <- data %>% 
   select(year, ccode, region, gasto_social)
 
 g <- g %>% 
@@ -96,4 +96,75 @@ ggplot() +
 ![IMAGE_DESCRIPTION](gasto_al_ea_eu.jpg)
  
 
-I followed [Knaflic's](https://www.wiley.com/en-us/Storytelling+with+Data:+A+Data+Visualization+Guide+for+Business+Professionals-p-9781119002253) advise of trying to simplify the visualization as much as possible by extracting the top and right axes and inserting the ratings right on the line instead of putting a legend. 
+I followed [Knaflic's](https://www.wiley.com/en-us/Storytelling+with+Data:+A+Data+Visualization+Guide+for+Business+Professionals-p-9781119002253) advise of trying to simplify the visualization as much as possible by extracting the top and right axes. Also, in order to make it easier the visualization, I inserted the labels at the end of the lines, instead of putting a legend below. 
+
+
+## 2. Social expenditure and economic growth
+
+
+Social spending is the most widely indicator used to show how governments invest in social policies. Since governments have different resource capacity, political economists usually analyse this indicator in percentage of GDP, when they are comparing countries. Yet, time series analysis has to be carefully conducted with this indicator, as it is affected by the annual GDP growth. So a downward trend in social spending (% GDP) does not necessarily imply a decline in spending on social policies, it might be a product of a high GDP growth (the denominator).
+
+In this case, it suitable analyzing social spending with GDP growth. Although it is tempting to use a two axis graph, many data analysts do not recommend it. See this discussion [here](https://blog.datawrapper.de/dualaxis/). A better solution would be plotting two graphics, side by side. 
+
+---
+
+Loading packpages and data
+
+```
+pacman::p_load(tidyverse, dplyr, tidyr, ggplot2, ggpubr)
+
+load("data_geral.RData")
+
+```
+
+Preparing data...
+
+```
+
+df <- data_geral %>%
+  mutate(gasto_social = (saudpib + segurpib + educpib)) %>% # Creating a new variable, total social spending, by the sum of education, health, and social security
+  select(pais, ccode, year, region, saudpib, segurpib, educpib, region, gasto_social,growth_WDI) %>% selecting variables
+  filter(year %in% c(2000:2015) & region == "Latin America") # filtering years and region. In this case, I just look at to Latin America
+  
+ df <- df %>%
+ group_by(year) %>%
+ mutate(mean_growth = mean(growth_WDI, na.rm = TRUE), #calculating the average grouped by year
+        mean_gasto = mean(gasto_social, na.rm = TRUE))
+
+```
+
+Storing graphics into two different objects.
+
+```
+#Social spending
+spend <- ggplot(def) +
+  aes(x = year, y = mean_gasto) +
+  geom_line(size = 1L, colour = "#0c4c8a") +
+  geom_point(size = 2, colour = "#0c4c8a") +
+  ylab("") + xlab("") +
+  labs(title = "Gasto Social (%PIB)") + # Social expenditure (% GDP)
+  scale_y_continuous(limits = c(0, 16), labels = function(x) paste0(x, "%")) +
+  theme_minimal(base_size = 16) +
+  scale_x_discrete(limits = c(2000:2015)) +
+  theme(axis.text.x = element_text(angle = 90)) 
+  
+#GDP growth
+
+growth <- ggplot(df) +
+  aes(x = year, y = mean_growth) +
+  geom_line(size = 1L, colour = "#0c4c8a") +
+  geom_point(size = 2, colour = "#0c4c8a") +
+  scale_y_continuous(labels = function(x) paste0(x, "%")) +
+  ylab("") + xlab("") +  labs(title = "Taxa de crescimento do PIB") + # Growth GDP rate
+  theme_minimal(base_size = 16) +
+  scale_x_discrete(limits = c(2000:2015)) +
+  theme(axis.text.x = element_text(angle = 90))
+  
+```
+Then, I use the function ``ggarrange`` from ``ggpubr`` packpage, which allows arranging multiple plots on the same page.
+
+```
+ggarrange(gasto, growth)
+
+```
+
