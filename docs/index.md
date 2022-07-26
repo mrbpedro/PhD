@@ -168,3 +168,4 @@ ggarrange(gasto, growth)
 
 ```
 
+![IMAGE DESCRIPTION](gasto_growth_al.jpg)
