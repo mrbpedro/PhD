@@ -1,0 +1,3 @@
+Visualizations
+
+![spending](images/gasto_al_ea_eu.jpg)
