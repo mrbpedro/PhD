@@ -1,6 +1,8 @@
 # Visualizations
 
-## Social expenditure comparison among regions (Latin America, Easter Europe and East Asia)
+This repository holds codes used for data visualization in my PhD dissertation. Actually, I will post selected graphics here, because many of them are of the same type. I used R and ggplot for all of them.
+
+## 1. Social expenditure comparison among regions (Latin America, Easter Europe and East Asia) (Line graph)
 
 I will plot the historical development of average social expenditure in percentage of GDP by region, particularly in Latin America, Easter Europe and East Asia. The goal is to compare how these regions have promoted public spending on social policies over the years.
 
@@ -91,5 +93,7 @@ ggplot() +
         plot.margin = margin(14, 7, 3, 1.5)) 
 ```
  
+![IMAGE_DESCRIPTION](gasto_al_ea_eu.jpg)
  
- 
+
+I followed [Knaflic's](https://www.wiley.com/en-us/Storytelling+with+Data:+A+Data+Visualization+Guide+for+Business+Professionals-p-9781119002253) advise of trying to simplify the visualization as much as possible by extracting the top and right axes and inserting the ratings right on the line instead of putting a legend. 
