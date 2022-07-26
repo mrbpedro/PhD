@@ -93,7 +93,7 @@ ggplot() +
         plot.margin = margin(14, 7, 3, 1.5)) 
 ```
  
-![IMAGE_DESCRIPTION](gasto_al_ea_eu.jpg)
+![IMAGE_DESCRIPTION](gasto_al_ea_eu.png)
  
 
 I followed [Knaflic's](https://www.wiley.com/en-us/Storytelling+with+Data:+A+Data+Visualization+Guide+for+Business+Professionals-p-9781119002253) advise of trying to simplify the visualization as much as possible by extracting the top and right axes. Also, in order to make it easier the visualization, I inserted the labels at the end of the lines, instead of putting a legend below. 
