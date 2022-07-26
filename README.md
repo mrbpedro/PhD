@@ -1,4 +1,4 @@
-# Tese
+# Dissertation
 
 Estou compartilhando os códigos utilizados na minha tese de doutorado que analisou o avanço dos Estados de bem-estar tardios, entre 1995 e 2015 na América Latina e no Leste Asiático. 
 
